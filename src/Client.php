@@ -5,23 +5,23 @@ namespace AdaiasMagdiel\G1;
 use Exception;
 use JsonException;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleHttp;
 use voku\helper\HtmlDomParser;
 use voku\helper\SimpleHtmlDomBlank;
 
 use AdaiasMagdiel\G1\Enum\Estado;
 use AdaiasMagdiel\G1\Response\Ultimas;
 
-class Api
+class Client
 {
 	private HtmlDomParser $DOM;
-	private Client $client;
+	private GuzzleHttp $client;
 	private string $lastUrl = "";
 	private array $resourcesUrls = [];
 
 	public function __construct()
 	{
-		$this->client = new Client();
+		$this->client = new GuzzleHttp();
 	}
 
 	public function ultimas(int $page = 1, ?Estado $estado = null): Ultimas
