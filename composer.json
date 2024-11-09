@@ -1,0 +1,21 @@
+{
+    "name": "adaiasmagdiel/g1-api",
+    "description": "An unofficial PHP API to retrieve news from the G1 website.",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^7.9",
+        "voku/simple_html_dom": "^4.8"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AdaiasMagdiel\\G1\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Adaías Magdiel",
+            "email": "adaiasmagdiell@gmail.com"
+        }
+    ]
+}
