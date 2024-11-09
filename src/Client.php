@@ -19,6 +19,8 @@ class Client
 	private string $lastUrl = "";
 	private array $resourcesUrls = [];
 
+	private string $baseUrl = "https://g1.globo.com/";
+
 	public function __construct()
 	{
 		$this->client = new GuzzleHttp();
@@ -26,7 +28,7 @@ class Client
 
 	public function ultimas(int $page = 1, ?Estado $estado = null): Ultimas
 	{
-		$url = "https://g1.globo.com/ultimas-noticias/";
+		$url = $this->baseUrl . ($estado ? $estado->value : "") . "/ultimas-noticias/";
 
 		$this->getDOM($url);
 		$this->lastUrl = $url;
