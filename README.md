@@ -1,6 +1,6 @@
-# G1 News API for PHP
+# G1 News Client for PHP
 
-This project provides an unofficial PHP API to retrieve news from the [G1 website](https://g1.globo.com/), a property of [Globo Comunicações e Participações S.A](https://grupoglobo.globo.com/). This API is created purely for educational purposes, with no commercial intent and no infringement on copyrights or related rights. The goal is to offer an easy, straightforward way to access prominent news from Brazil and around the world.
+This project provides an unofficial PHP Client to retrieve news from the [G1 website](https://g1.globo.com/), a property of [Globo Comunicações e Participações S.A](https://grupoglobo.globo.com/). This API is created purely for educational purposes, with no commercial intent and no infringement on copyrights or related rights. The goal is to offer an easy, straightforward way to access prominent news from Brazil and around the world.
 
 ## Features
 
