@@ -1,6 +1,6 @@
 {
-    "name": "adaiasmagdiel/g1-api",
-    "description": "An unofficial PHP API to retrieve news from the G1 website.",
+    "name": "adaiasmagdiel/g1-client",
+    "description": "An unofficial PHP Client to retrieve news from the G1 website.",
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "^7.9",
