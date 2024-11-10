@@ -1,1 +1,5 @@
-vendor/ 
+coverage/
+vendor/
+
+composer.lock
+dev-*.*
