@@ -11,9 +11,9 @@ test('fetches latest news without state', function () {
     expect($ultimas)->toBeInstanceOf(Ultimas::class);
     expect($ultimas->id)->toBeString();
     expect($ultimas->nextPage)->toBe(2);
-    expect($ultimas->items)->toBeArray();
-    expect($ultimas->items[0])->toBeInstanceOf(\AdaiasMagdiel\G1\Response\Item::class);
-    expect($ultimas->items[0]->title)->toBeString();
+    expect($ultimas->news)->toBeArray();
+    expect($ultimas->news[0])->toBeInstanceOf(\AdaiasMagdiel\G1\Response\News::class);
+    expect($ultimas->news[0]->title)->toBeString();
 });
 
 test('fetches latest news with a specific state', function () {
@@ -23,9 +23,9 @@ test('fetches latest news with a specific state', function () {
     expect($ultimas)->toBeInstanceOf(Ultimas::class);
     expect($ultimas->id)->toBeString();
     expect($ultimas->nextPage)->toBe(2);
-    expect($ultimas->items)->toBeArray();
-    expect($ultimas->items[0])->toBeInstanceOf(\AdaiasMagdiel\G1\Response\Item::class);
-    expect($ultimas->items[0]->title)->toBeString();
+    expect($ultimas->news)->toBeArray();
+    expect($ultimas->news[0])->toBeInstanceOf(\AdaiasMagdiel\G1\Response\News::class);
+    expect($ultimas->news[0]->title)->toBeString();
 });
 
 test('fetches latest news with specific page', function () {
@@ -35,9 +35,9 @@ test('fetches latest news with specific page', function () {
     expect($ultimas)->toBeInstanceOf(Ultimas::class);
     expect($ultimas->id)->toBeString();
     expect($ultimas->nextPage)->toBe(6);
-    expect($ultimas->items)->toBeArray();
-    expect($ultimas->items[0])->toBeInstanceOf(\AdaiasMagdiel\G1\Response\Item::class);
-    expect($ultimas->items[0]->title)->toBeString();
+    expect($ultimas->news)->toBeArray();
+    expect($ultimas->news[0])->toBeInstanceOf(\AdaiasMagdiel\G1\Response\News::class);
+    expect($ultimas->news[0]->title)->toBeString();
 });
 
 test('fetches latest news with specific page and specific state', function () {
@@ -47,7 +47,7 @@ test('fetches latest news with specific page and specific state', function () {
     expect($ultimas)->toBeInstanceOf(Ultimas::class);
     expect($ultimas->id)->toBeString();
     expect($ultimas->nextPage)->toBe(11);
-    expect($ultimas->items)->toBeArray();
-    expect($ultimas->items[0])->toBeInstanceOf(\AdaiasMagdiel\G1\Response\Item::class);
-    expect($ultimas->items[0]->title)->toBeString();
+    expect($ultimas->news)->toBeArray();
+    expect($ultimas->news[0])->toBeInstanceOf(\AdaiasMagdiel\G1\Response\News::class);
+    expect($ultimas->news[0]->title)->toBeString();
 });
