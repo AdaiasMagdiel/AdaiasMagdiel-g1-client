@@ -2,7 +2,7 @@
 
 namespace AdaiasMagdiel\G1\Response;
 
-class Item
+class News
 {
 	public string $url;
 
@@ -46,8 +46,8 @@ class Ultimas
 {
 	public string $id;
 	public int $nextPage;
-	/** @var Item[] */
-	public array $items;
+	/** @var News[] */
+	public array $news;
 
 	function __construct(array $data)
 	{
@@ -55,7 +55,7 @@ class Ultimas
 		$this->nextPage = $data["nextPage"];
 
 		foreach ($data["items"] as $item) {
-			$this->items[] = new Item($item);
+			$this->news[] = new News($item);
 		}
 	}
 }
