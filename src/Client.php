@@ -11,39 +11,39 @@ use voku\helper\SimpleHtmlDomBlank;
 
 use AdaiasMagdiel\G1\Enum\Estado;
 use AdaiasMagdiel\G1\Response\Ultimas;
+use AdaiasMagdiel\G1\Cache;
 
 class Client
 {
 	private HtmlDomParser $DOM;
 	private GuzzleHttp $client;
-	private string $lastUrl = "";
-	private array $resourcesUrls = [];
+	private Cache $cache;
 
 	private string $baseUrl = "https://g1.globo.com/";
 
-	public function __construct()
+	public function __construct(string $cacheDir = __DIR__ . "/.g1-cache")
 	{
 		$this->client = new GuzzleHttp();
+		$this->cache = new Cache(path: $cacheDir, expires: 60 * 10);
 	}
 
 	public function ultimas(int $page = 1, ?Estado $estado = null): Ultimas
 	{
 		$url = $this->baseUrl . ($estado ? $estado->value : "") . "/ultimas-noticias/";
 
-		$this->getDOM($url);
-		$this->lastUrl = $url;
-
 		$resourceUrl = $this->getPageResourceUri($url);
-		$this->resourcesUrls[$url] = $resourceUrl;
-
 		$internalUrl = "$resourceUrl/page/$page";
 
-		$res = $this->client->get($internalUrl, options: [
-			"headers" => [
-				"accept" => "*/*"
-			]
-		]);
-		$body = $res->getBody()->getContents();
+		$body = $this->cache->get($internalUrl, function () use ($internalUrl) {
+			$res = $this->client->get($internalUrl, options: [
+				"headers" => [
+					"accept" => "*/*"
+				]
+			]);
+			$body = $res->getBody()->getContents();
+
+			return $body;
+		});
 
 		try {
 			$json = json_decode($body, associative: true, flags: JSON_THROW_ON_ERROR);
@@ -56,11 +56,12 @@ class Client
 
 	private function getDOM(string $url): HtmlDomParser
 	{
-		if ($this->lastUrl === $url && $this->DOM)
-			return $this->DOM;
 
-		$res = $this->client->get($url);
-		$html = $res->getBody()->getContents();
+		$html = $this->cache->get($url, function () use ($url) {
+			$res = $this->client->get($url);
+			$html = $res->getBody()->getContents();
+			return $html;
+		});
 
 		$this->DOM = HtmlDomParser::str_get_html($html);
 		return $this->DOM;
@@ -77,25 +78,30 @@ class Client
 		}
 	}
 
-	private function getPageResourceUri(string $url = ""): ?string
+	private function getPageResourceUri(string $url = ""): string
 	{
-		if (isset($this->resourcesUrls[$url]))
-			return $this->resourcesUrls[$url];
+		$this->getDOM($url);
 
-		$sep = 'SETTINGS.BASTIAN["RESOURCE_URI"]="';
+		$key = "resource:$url";
 
-		foreach ($this->getScripts($this->DOM) as $script) {
-			$text = $script->innerText();
+		$resource = $this->cache->get($key, function () {
+			$sep = 'SETTINGS.BASTIAN["RESOURCE_URI"]="';
 
-			if (!str_contains($text, $sep)) continue;
+			foreach ($this->getScripts($this->DOM) as $script) {
+				$text = $script->innerText();
 
-			$resourceUri = explode($sep, $text, 2);
-			$resourceUri = end($resourceUri);
-			$resourceUri = explode('"', $resourceUri, 2)[0];
+				if (!str_contains($text, $sep)) continue;
 
-			return $resourceUri;
-		}
+				$resourceUri = explode($sep, $text, 2);
+				$resourceUri = end($resourceUri);
+				$resourceUri = explode('"', $resourceUri, 2)[0];
 
-		return null;
+				return $resourceUri;
+			}
+
+			return "";
+		}, expires: 60 * 30);
+
+		return $resource;
 	}
 }
